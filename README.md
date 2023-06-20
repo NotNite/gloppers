@@ -4,7 +4,7 @@ Gloppers (**gl**ob h**oppers**) is a Minecraft mod that lets you filter your hop
 
 The idea comes from [LiveOverflow's Minecraft lets play](https://www.youtube.com/playlist?list=PLhixgUqwRTjwvBI-hmbZ2rpkAl4lutnJG), where these were silently implemented on his server to make his storage system easier to build.
 
-![A screenshot of a hopper's inventory, with the name "!*_ore,anvil"](./img/demo.png)
+![A screenshot of a hopper's inventory, with the name "!*_ore,anvil"](https://raw.githubusercontent.com/NotNite/gloppers/main/img/demo.png)
 
 ## Usage
 
@@ -32,6 +32,6 @@ Note that you must use the internal identifier of the items, and not the item's 
 
 Gloppers are most useful in storage systems. Instead of requiring redstone circuits that take up space, you can instead just design it like so:
 
-![A 2x4x1 schematic of a storage system, with a top row of hoppers, and a bottom row of one glopper and one chest](./img/storage.png)
+![A 2x4x1 schematic of a storage system, with a top row of hoppers, and a bottom row of one glopper and one chest](https://raw.githubusercontent.com/NotNite/gloppers/main/img/storage.png)
 
 Items will only be sucked up from the top row to the bottom glopper if the pattern is matched.

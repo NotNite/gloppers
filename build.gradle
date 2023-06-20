@@ -1,6 +1,7 @@
 plugins {
     id "fabric-loom" version "1.2-SNAPSHOT"
     id "org.jetbrains.kotlin.jvm" version "1.8.22"
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 version = project.mod_version
@@ -54,5 +55,19 @@ java {
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}" }
+    }
+}
+
+modrinth {
+    syncBodyFrom = rootProject.file("README.md").text
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "gloppers"
+    versionType = "release"
+    uploadFile = remapJar
+    gameVersions = ["1.20", "1.20.1"]
+    loaders = ["fabric", "quilt"]
+    dependencies {
+        required.project "fabric-api"
+        required.project "fabric-language-kotlin"
     }
 }
