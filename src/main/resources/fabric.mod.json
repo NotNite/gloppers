@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "gloppers",
+  "version": "${version}",
+  "name": "Gloppers!",
+  "description": "Filter your hoppers by renaming them with glob patterns.",
+  "authors": [
+    "NotNite"
+  ],
+  "contact": {
+    "sources": "https://github.com/NotNite/gloppers"
+  },
+  "license": "MIT",
+  "icon": "assets/gloppers/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      {
+        "value": "com.notnite.gloppers.Gloppers",
+        "adapter": "kotlin"
+      }
+    ]
+  },
+  "mixins": [
+    {
+      "environment": "server",
+      "config": "gloppers.mixins.json"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.19",
+    "minecraft": "~1.20",
+    "java": ">=17",
+    "fabric-api": "*",
+    "fabric-language-kotlin": ">=1.8.22"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.notnite.gloppers.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "server": [
+    "HopperBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
