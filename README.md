@@ -35,3 +35,8 @@ Gloppers are most useful in storage systems. Instead of requiring redstone circu
 ![A 2x4x1 schematic of a storage system, with a top row of hoppers, and a bottom row of one glopper and one chest](https://raw.githubusercontent.com/NotNite/gloppers/main/img/storage.png)
 
 Items will only be sucked up from the top row to the bottom glopper if the pattern is matched.
+
+## Notes with mod compatibility
+
+- Lithium conflicts with Gloppers, and you need to turn its hopper optimizations off in `lithium.properties` (`mixin.block.hopper=false`).
+

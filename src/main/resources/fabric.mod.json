@@ -12,20 +12,9 @@
   },
   "license": "MIT",
   "icon": "assets/gloppers/icon.png",
-  "environment": "server",
-  "entrypoints": {
-    "server": [
-      {
-        "value": "com.notnite.gloppers.Gloppers",
-        "adapter": "kotlin"
-      }
-    ]
-  },
+  "environment": "*",
   "mixins": [
-    {
-      "environment": "server",
-      "config": "gloppers.mixins.json"
-    }
+    "gloppers.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.19",

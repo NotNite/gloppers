@@ -1,13 +1,10 @@
 package com.notnite.gloppers
 
-import net.fabricmc.api.DedicatedServerModInitializer
 import net.minecraft.block.entity.HopperBlockEntity
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.ItemStack
 
-object Gloppers : DedicatedServerModInitializer {
-    override fun onInitializeServer() {}
-
+object Gloppers {
     private fun matchesGlob(glob: String, str: String): Boolean {
         val regex = glob
             .replace(".", "\\.")

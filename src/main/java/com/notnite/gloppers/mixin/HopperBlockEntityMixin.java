@@ -1,8 +1,6 @@
 package com.notnite.gloppers.mixin;
 
 import com.notnite.gloppers.Gloppers;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.inventory.Inventory;
@@ -14,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Environment(EnvType.SERVER)
 @Mixin(HopperBlockEntity.class)
 public class HopperBlockEntityMixin {
     private static int dirtySlotState = 0;
