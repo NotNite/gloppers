@@ -1,20 +1,56 @@
 package com.notnite.gloppers.mixin;
 
-import com.notnite.gloppers.Gloppers;
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.block.entity.HopperBlockEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HopperBlockEntity.class)
-public class HopperBlockEntityMixin {
+public abstract class HopperBlockEntityMixin {
+    @Unique
     private static int dirtySlotState = 0;
+
+    @Shadow
+    private DefaultedList<ItemStack> inventory;
+
+    @Unique
+    private static boolean canTransfer(Inventory to, ItemStack stack) {
+        try {
+            if (to instanceof HopperBlockEntity) {
+                var hopperName = ((HopperBlockEntity) to).getName().copyContentOnly().getString();
+                var itemRegistryEntry = stack.getRegistryEntry().getKey();
+                if (itemRegistryEntry.isEmpty()) return false;
+                var itemName = itemRegistryEntry.get().getValue().getPath();
+
+                if (hopperName.startsWith("!")) {
+                    var globs = hopperName.substring(1).split(",");
+                    for (var glob : globs) {
+                        var strippedGlob = glob.replaceAll("[^a-zA-Z0-9_*?]", "");
+                        var regex = strippedGlob.replace(".", "\\.").replace("*", ".*").replace("?", ".");
+                        if (itemName.matches(regex)) return true;
+                    }
+
+                    // No globs matched, so don't transfer
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            // ignored
+        }
+        
+        // Doesn't have a glob (or exception), so transfer
+        return true;
+    }
 
     // We can't decrement the item stack before it gets passed to transfer, because we may not be allowed to transfer,
     // eating an item. We know removeStack will get called immediately before transfer, so while it's messy, we can use
@@ -38,7 +74,7 @@ public class HopperBlockEntityMixin {
     private static ItemStack insert$gloppersTransfer(
         Inventory from, Inventory to, ItemStack stack, Direction side
     ) {
-        if (!Gloppers.INSTANCE.canTransfer(to, stack)) {
+        if (!canTransfer(to, stack)) {
             // The return value of this is only used to check if it's empty, and if so, returns that it succeeded.
             // We can just return the item stack we were given, as we didn't remove from it.
             return stack;
@@ -55,8 +91,19 @@ public class HopperBlockEntityMixin {
         at = @At("HEAD"),
         cancellable = true
     )
-    private static void extract(Hopper hopper, Inventory inventory, int slot, Direction side, CallbackInfoReturnable<Boolean> cir) {
+    private static void extract(Hopper hopper, Inventory inventory, int slot, Direction
+        side, CallbackInfoReturnable<Boolean> cir) {
         var item = inventory.getStack(slot);
-        if (!Gloppers.INSTANCE.canTransfer(hopper, item)) cir.setReturnValue(false);
+        if (!canTransfer(hopper, item)) cir.setReturnValue(false);
+    }
+
+    // This handles the case where an item entity is dropped onto the hopper from above.
+    @Inject(
+        method = "extract(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/entity/ItemEntity;)Z",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private static void extract(Inventory inventory, ItemEntity itemEntity, CallbackInfoReturnable<Boolean> cir) {
+        if (!canTransfer(inventory, itemEntity.getStack())) cir.setReturnValue(false);
     }
 }
