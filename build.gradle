@@ -1,5 +1,5 @@
 plugins {
-    id "fabric-loom" version "1.2-SNAPSHOT"
+    id "fabric-loom" version "1.7-SNAPSHOT"
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -29,14 +29,14 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
+    it.options.release = 21
 }
 
 java {
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
@@ -51,6 +51,6 @@ modrinth {
     projectId = "gloppers"
     versionType = "release"
     uploadFile = remapJar
-    gameVersions = ["1.20.4"]
+    gameVersions = ["1.21"]
     loaders = ["fabric", "quilt"]
 }

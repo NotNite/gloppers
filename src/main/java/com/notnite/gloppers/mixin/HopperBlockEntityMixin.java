@@ -57,9 +57,9 @@ public abstract class HopperBlockEntityMixin {
     // a static variable to keep track of what slot we're removing from.
     @Redirect(
         method = "insert",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Inventory;removeStack(II)Lnet/minecraft/item/ItemStack;")
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/HopperBlockEntity;removeStack(II)Lnet/minecraft/item/ItemStack;")
     )
-    private static ItemStack insert$gloppersRemoveStack(Inventory instance, int slot, int amount) {
+    private static ItemStack insert$gloppersRemoveStack(HopperBlockEntity instance, int slot, int amount) {
         dirtySlotState = slot;
         return instance.getStack(slot);
     }
