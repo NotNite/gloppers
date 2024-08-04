@@ -5,6 +5,9 @@ import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,9 +38,18 @@ public abstract class HopperBlockEntityMixin {
                 if (hopperName.startsWith("!")) {
                     var globs = hopperName.substring(1).split(",");
                     for (var glob : globs) {
-                        var strippedGlob = glob.replaceAll("[^a-zA-Z0-9_*?]", "");
-                        var regex = strippedGlob.replace(".", "\\.").replace("*", ".*").replace("?", ".");
-                        if (itemName.matches(regex)) return true;
+                        if (glob.startsWith("#")) {
+                            var strippedTag = glob.replaceAll("[^a-z0-9/._\\-:]", "");
+                            var id = Identifier.tryParse(strippedTag);
+                            if (id != null) {
+                                var tag = TagKey.of(RegistryKeys.ITEM, id);
+                                if (stack.getRegistryEntry().isIn(tag)) return true;
+                            }
+                        } else {
+                            var strippedGlob = glob.replaceAll("[^a-zA-Z0-9_*?]", "");
+                            var regex = strippedGlob.replace(".", "\\.").replace("*", ".*").replace("?", ".");
+                            if (itemName.matches(regex)) return true;
+                        }
                     }
 
                     // No globs matched, so don't transfer
