@@ -18,6 +18,10 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+
+    testImplementation ("org.junit.jupiter:junit-jupiter:5.7.1")
+    testRuntimeOnly ("org.junit.platform:junit-platform-launcher")
 }
 
 processResources {
@@ -30,6 +34,10 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 java {
